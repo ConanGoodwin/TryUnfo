@@ -1,5 +1,6 @@
 import React from 'react';
 import Form from './components/Form';
+import Card from './components/Card';
 
 class App extends React.Component {
   constructor() {
@@ -12,7 +13,7 @@ class App extends React.Component {
       att02: '',
       att03: '',
       dirImage: '',
-      lstRare: '',
+      lstRare: 'normal',
       chkTrunfo: false,
       hasTrunfo: false,
       isSaveButtonDisabled: false,
@@ -20,11 +21,14 @@ class App extends React.Component {
   }
 
   handleInputChange = ({ target }) => {
-    this.setState({ [{ id }]: target.value });
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+
+    this.setState({ [target.id]: value });
   }
 
-  handleSaveButtonClick = ({ target }) => {
-    this.setState({ [{ id }]: target.value });
+  handleSaveButtonClick = (event) => {
+    event.preventDefault();
+    // this.setState({ [target.id]: target.value });
   }
 
   render() {
@@ -47,6 +51,16 @@ class App extends React.Component {
           isSaveButtonDisabled={ isSaveButtonDisabled }
           onInputChange={ this.handleInputChange }
           onSaveButtonClick={ this.handleSaveButtonClick }
+        />
+        <Card
+          cardName={ name }
+          cardDescription={ descricao }
+          cardAttr1={ att01 }
+          cardAttr2={ att02 }
+          cardAttr3={ att03 }
+          cardImage={ dirImage }
+          cardRare={ lstRare }
+          cardTrunfo={ chkTrunfo }
         />
       </div>
     );
