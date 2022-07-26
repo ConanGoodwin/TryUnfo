@@ -65,8 +65,8 @@ class App extends React.Component {
 
   handleSaveButtonClick = (event) => {
     event.preventDefault();
-    const { name, descricao, att01, att02, att03, cardDeck } = this.state;
-    const { dirImage, lstRare, chkTrunfo, hasTrunfo, isSaveButtonDisabled } = this.state;
+    const { name, descricao, att01, att02, att03 } = this.state;
+    const { cardDeck, dirImage, lstRare, chkTrunfo } = this.state;
     const objCard = {
       name,
       descricao,
@@ -76,10 +76,8 @@ class App extends React.Component {
       dirImage,
       lstRare,
       chkTrunfo,
-      hasTrunfo,
-      isSaveButtonDisabled,
     };
-    this.setState({ cardDeck: [...cardDeck, objCard] }, () => {
+    this.setState({ cardDeck: [...cardDeck, objCard], hasTrunfo: chkTrunfo }, () => {
       this.setState({
         name: '',
         descricao: '',
@@ -89,7 +87,6 @@ class App extends React.Component {
         dirImage: '',
         lstRare: 'normal',
         chkTrunfo: false,
-        hasTrunfo: false,
         isSaveButtonDisabled: true,
       });
     });
