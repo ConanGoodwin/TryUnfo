@@ -17,6 +17,7 @@ class App extends React.Component {
       chkTrunfo: false,
       hasTrunfo: false,
       isSaveButtonDisabled: true,
+      cardDeck: [],
     };
   }
 
@@ -64,7 +65,34 @@ class App extends React.Component {
 
   handleSaveButtonClick = (event) => {
     event.preventDefault();
-    // this.setState({ [target.id]: target.value });
+    const { name, descricao, att01, att02, att03, cardDeck } = this.state;
+    const { dirImage, lstRare, chkTrunfo, hasTrunfo, isSaveButtonDisabled } = this.state;
+    const objCard = {
+      name,
+      descricao,
+      att01,
+      att02,
+      att03,
+      dirImage,
+      lstRare,
+      chkTrunfo,
+      hasTrunfo,
+      isSaveButtonDisabled,
+    };
+    this.setState({ cardDeck: [...cardDeck, objCard] }, () => {
+      this.setState({
+        name: '',
+        descricao: '',
+        att01: '0',
+        att02: '0',
+        att03: '0',
+        dirImage: '',
+        lstRare: 'normal',
+        chkTrunfo: false,
+        hasTrunfo: false,
+        isSaveButtonDisabled: true,
+      });
+    });
   }
 
   render() {
