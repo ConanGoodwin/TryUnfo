@@ -28,7 +28,7 @@ class App extends React.Component {
 
     if (!name || !descricao || !dirImage || !lstRare) return true;
 
-    if (!parseInt(att01, 10) || !parseInt(att02, 10) || !parseInt(att03, 10)) return true;
+    // if (!parseInt(att01, 10) || !parseInt(att02, 10) || !parseInt(att03, 10)) return true;
 
     if (parseInt(att01, 10) + parseInt(att02, 10) + parseInt(att03, 10) > maxSumAtt) {
       return true;
@@ -53,12 +53,13 @@ class App extends React.Component {
     return false;
   }
 
-  handleInputChange = async ({ target }) => {
+  handleInputChange = ({ target }) => {
     const value = target.type === 'checkbox' ? target.checked : target.value;
 
-    await this.setState({ [target.id]: value });
-    const validaOk = this.validaBotao();
-    this.setState({ isSaveButtonDisabled: validaOk });
+    this.setState({ [target.id]: value }, () => {
+      const validaOk = this.validaBotao();
+      this.setState({ isSaveButtonDisabled: validaOk });
+    });
   }
 
   handleSaveButtonClick = (event) => {
