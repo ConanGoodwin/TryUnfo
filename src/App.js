@@ -94,35 +94,59 @@ class App extends React.Component {
 
   render() {
     const { name, descricao, att01, att02, att03, dirImage, lstRare } = this.state;
-    const { chkTrunfo, hasTrunfo, isSaveButtonDisabled } = this.state;
+    const { chkTrunfo, hasTrunfo, isSaveButtonDisabled, cardDeck } = this.state;
+
     return (
-      <div>
-        <h1>Tryunfo</h1>
-        <Form
-          cardName={ name }
-          cardDescription={ descricao }
-          cardAttr1={ att01 }
-          cardAttr2={ att02 }
-          cardAttr3={ att03 }
-          cardImage={ dirImage }
-          cardRare={ lstRare }
-          cardTrunfo={ chkTrunfo }
-          hasTrunfo={ hasTrunfo }
-          isSaveButtonDisabled={ isSaveButtonDisabled }
-          onInputChange={ this.handleInputChange }
-          onSaveButtonClick={ this.handleSaveButtonClick }
-        />
-        <Card
-          cardName={ name }
-          cardDescription={ descricao }
-          cardAttr1={ att01 }
-          cardAttr2={ att02 }
-          cardAttr3={ att03 }
-          cardImage={ dirImage }
-          cardRare={ lstRare }
-          cardTrunfo={ chkTrunfo }
-        />
-      </div>
+      <main className="App">
+        <section style={ { display: 'flex', flexWrap: 'wrap' } }>
+          <h1 style={ { width: '100%' } }>Tryunfo</h1>
+          <div style={ { border: '1px solid black' } }>
+            <Form
+              cardName={ name }
+              cardDescription={ descricao }
+              cardAttr1={ att01 }
+              cardAttr2={ att02 }
+              cardAttr3={ att03 }
+              cardImage={ dirImage }
+              cardRare={ lstRare }
+              cardTrunfo={ chkTrunfo }
+              hasTrunfo={ hasTrunfo }
+              isSaveButtonDisabled={ isSaveButtonDisabled }
+              onInputChange={ this.handleInputChange }
+              onSaveButtonClick={ this.handleSaveButtonClick }
+            />
+          </div>
+          <div style={ { border: '1px solid black' } }>
+            <Card
+              cardName={ name }
+              cardDescription={ descricao }
+              cardAttr1={ att01 }
+              cardAttr2={ att02 }
+              cardAttr3={ att03 }
+              cardImage={ dirImage }
+              cardRare={ lstRare }
+              cardTrunfo={ chkTrunfo }
+            />
+          </div>
+        </section>
+        <section>
+          <div>
+            {cardDeck.map((item, index) => (
+              <Card
+                key={ index }
+                cardName={ item.name }
+                cardDescription={ item.descricao }
+                cardAttr1={ item.att01 }
+                cardAttr2={ item.att02 }
+                cardAttr3={ item.att03 }
+                cardImage={ item.dirImage }
+                cardRare={ item.lstRare }
+                cardTrunfo={ item.chkTrunfo }
+              />
+            ))}
+          </div>
+        </section>
+      </main>
     );
   }
 }
