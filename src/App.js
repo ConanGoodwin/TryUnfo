@@ -7,6 +7,7 @@ class App extends React.Component {
     super();
 
     this.state = {
+      indice: 0,
       name: '',
       descricao: '',
       att01: '0',
@@ -65,9 +66,10 @@ class App extends React.Component {
 
   handleSaveButtonClick = (event) => {
     event.preventDefault();
-    const { name, descricao, att01, att02, att03 } = this.state;
+    const { indice, name, descricao, att01, att02, att03 } = this.state;
     const { cardDeck, dirImage, lstRare, chkTrunfo } = this.state;
     const objCard = {
+      indice,
       name,
       descricao,
       att01,
@@ -79,6 +81,7 @@ class App extends React.Component {
     };
     this.setState({ cardDeck: [...cardDeck, objCard], hasTrunfo: chkTrunfo }, () => {
       this.setState({
+        indice: indice + 1,
         name: '',
         descricao: '',
         att01: '0',
@@ -91,6 +94,19 @@ class App extends React.Component {
       });
     });
   }
+
+  handleDellButtonClick = (event) => {
+    event.preventDefault();
+    const { cardDeck } = this.state;
+    const chave = event.target.attributes[1].value;
+
+    this.setState(() => {
+      const newDeck = cardDeck.filter(({ indice }) => indice !== parseInt(chave, 10));
+      const seTrunfo = newDeck.some(({ chkTrunfo }) => chkTrunfo === true);
+
+      return { cardDeck: newDeck, hasTrunfo: seTrunfo };
+    });
+  };
 
   render() {
     const { name, descricao, att01, att02, att03, dirImage, lstRare } = this.state;
@@ -129,11 +145,10 @@ class App extends React.Component {
             />
           </div>
         </section>
-        <section>
-          <div>
-            {cardDeck.map((item, index) => (
+        <section style={ { display: 'flex', flexWrap: 'wrap' } }>
+          {cardDeck.map((item) => (
+            <div key={ item.indice }>
               <Card
-                key={ index }
                 cardName={ item.name }
                 cardDescription={ item.descricao }
                 cardAttr1={ item.att01 }
@@ -143,8 +158,17 @@ class App extends React.Component {
                 cardRare={ item.lstRare }
                 cardTrunfo={ item.chkTrunfo }
               />
-            ))}
-          </div>
+              <button
+                type="submit"
+                chave={ item.indice }
+                onClick={ this.handleDellButtonClick }
+                data-testid="delete-button"
+              >
+                Excluir
+
+              </button>
+            </div>
+          ))}
         </section>
       </main>
     );
