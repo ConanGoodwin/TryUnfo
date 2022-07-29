@@ -20,7 +20,8 @@ class App extends React.Component {
       isSaveButtonDisabled: true,
       filtroNome: '',
       filtroRare: '',
-      filtroTrunfo: '',
+      filtroTrunfo: false,
+      isFilterdisabled: false,
       cardDeck: [],
     };
   }
@@ -60,6 +61,8 @@ class App extends React.Component {
 
   handleInputChange = ({ target }) => {
     const value = target.type === 'checkbox' ? target.checked : target.value;
+
+    if (target.id === 'filtroTrunfo') this.setState({ isFilterdisabled: value });
 
     this.setState({ [target.id]: value }, () => {
       const validaOk = this.validaBotao();
@@ -114,8 +117,16 @@ class App extends React.Component {
   render() {
     const { name, descricao, att01, att02, att03, dirImage, lstRare } = this.state;
     const { chkTrunfo, hasTrunfo, isSaveButtonDisabled, cardDeck } = this.state;
-    const { filtroNome, filtroRare, filtroTrunfo } = this.state;
-    const cardFilter = cardDeck.filter((item) => item.name.includes(filtroNome));
+    const { filtroNome, filtroRare, filtroTrunfo, isFilterdisabled } = this.state;
+    let cardFilter = cardDeck.filter((item) => item.name.includes(filtroNome));
+
+    cardFilter = cardFilter.filter((item) => {
+      if (filtroRare === 'raro') {
+        return item.lstRare === filtroRare;
+      }
+      return item.lstRare.includes(filtroRare);
+    });
+    if (filtroTrunfo) (cardFilter = cardDeck.filter((item) => item.chkTrunfo === true));
 
     return (
       <main className="App">
@@ -150,29 +161,45 @@ class App extends React.Component {
             />
           </div>
         </section>
-        <section>
-          <form>
-            <label htmlFor="filtroNome">
-              Filtro por Nome:
-              <input
-                type="text"
-                id="filtroNome"
-                data-testid="name-filter"
-                value={ filtroNome }
-                onChange={ this.handleInputChange }
-              />
-            </label>
-            <label htmlFor="filtroRare">
-              Filtro por Raridade:
-              <input
-                type="text"
-                id="filtroRare"
-                value={ filtroNome }
-                onChange={ this.handleInputChange }
-              />
-            </label>
-          </form>
-        </section>
+        <form>
+          <label htmlFor="filtroNome">
+            Filtro por Nome:
+            <input
+              type="text"
+              id="filtroNome"
+              value={ filtroNome }
+              disabled={ isFilterdisabled }
+              onChange={ this.handleInputChange }
+              data-testid="name-filter"
+            />
+          </label>
+          <label htmlFor="filtroRare">
+            Filtro por Frequencia:
+            <select
+              name="lstRare"
+              id="filtroRare"
+              value={ filtroRare }
+              disabled={ isFilterdisabled }
+              onChange={ this.handleInputChange }
+              data-testid="rare-filter"
+            >
+              <option value="">todas</option>
+              <option value="normal">normal</option>
+              <option value="raro">raro</option>
+              <option value="muito raro">muito raro</option>
+            </select>
+          </label>
+          <label htmlFor="filtroTrunfo">
+            Super Trunfo
+            <input
+              type="checkbox"
+              id="filtroTrunfo"
+              checked={ filtroTrunfo }
+              onChange={ this.handleInputChange }
+              data-testid="trunfo-filter"
+            />
+          </label>
+        </form>
         <section style={ { display: 'flex', flexWrap: 'wrap' } }>
           {cardFilter.map((item) => (
             <div key={ item.indice }>
