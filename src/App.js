@@ -18,6 +18,9 @@ class App extends React.Component {
       chkTrunfo: false,
       hasTrunfo: false,
       isSaveButtonDisabled: true,
+      filtroNome: '',
+      filtroRare: '',
+      filtroTrunfo: '',
       cardDeck: [],
     };
   }
@@ -111,6 +114,8 @@ class App extends React.Component {
   render() {
     const { name, descricao, att01, att02, att03, dirImage, lstRare } = this.state;
     const { chkTrunfo, hasTrunfo, isSaveButtonDisabled, cardDeck } = this.state;
+    const { filtroNome, filtroRare, filtroTrunfo } = this.state;
+    const cardFilter = cardDeck.filter((item) => item.name.includes(filtroNome));
 
     return (
       <main className="App">
@@ -145,8 +150,31 @@ class App extends React.Component {
             />
           </div>
         </section>
+        <section>
+          <form>
+            <label htmlFor="filtroNome">
+              Filtro por Nome:
+              <input
+                type="text"
+                id="filtroNome"
+                data-testid="name-filter"
+                value={ filtroNome }
+                onChange={ this.handleInputChange }
+              />
+            </label>
+            <label htmlFor="filtroRare">
+              Filtro por Raridade:
+              <input
+                type="text"
+                id="filtroRare"
+                value={ filtroNome }
+                onChange={ this.handleInputChange }
+              />
+            </label>
+          </form>
+        </section>
         <section style={ { display: 'flex', flexWrap: 'wrap' } }>
-          {cardDeck.map((item) => (
+          {cardFilter.map((item) => (
             <div key={ item.indice }>
               <Card
                 cardName={ item.name }
